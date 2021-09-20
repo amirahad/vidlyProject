@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Like from "./common/like";
 import { getMovies } from "../services/fakeMovieService";
 
 class Movies extends Component {
@@ -12,10 +13,23 @@ class Movies extends Component {
     //this.setState({movies:movies})
   };
 
+  handleLike = (movie) => {
+    const movies = [...this.state.movies];
+    const index = movies.indexOf(movie);
+    movies[index] = { ...movies[index] };
+    movies[index].liked = !movies[index].liked;
+    this.setState({ movies });
+  };
+
   render() {
     const { length } = this.state.movies;
 
-    if (length === 0) return <h4 className="mt-5 text-danger">OPPSSSS!!! There Are No Movies in the Database.</h4>;
+    if (length === 0)
+      return (
+        <h4 className="mt-5 text-danger ">
+          OPPSSSS!!! There Are No Movies in the Database.
+        </h4>
+      );
 
     return (
       <div className="container mt-5">
@@ -28,6 +42,7 @@ class Movies extends Component {
               <th scope="col">Stock</th>
               <th scope="col">Rate</th>
               <th></th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -37,6 +52,12 @@ class Movies extends Component {
                 <td>{movie.genre.name}</td>
                 <td>{movie.numberInStock}</td>
                 <td>{movie.dailyRentalRate}</td>
+                <td>
+                  <Like
+                    liked={movie.liked}
+                    onClick={() => this.handleLike(movie)}
+                  />
+                </td>
                 <td>
                   <button
                     onClick={() => this.handleClick(movie)}
@@ -55,4 +76,3 @@ class Movies extends Component {
 }
 
 export default Movies;
- 
